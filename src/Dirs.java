@@ -30,7 +30,9 @@ public class Dirs {
         }
     }
     String getTreeRoot(){
-       File root = new File(path);
+
+        readIgnoreFile();
+        File root = new File(path);
        return traverse(root,root);
     }
     String traverse(File root, File current){
@@ -40,9 +42,9 @@ public class Dirs {
             // relative path from the original root
             Path relativePath = root.toPath().relativize(file.toPath());
 //            System.out.println(relativePath);
-            System.out.println(file.getName());
+//            System.out.println(file.getName());
 //            Constants.Default_Storage_Directory.equals(file.getName())
-            if (Lib.isIgnoreFileOrDirectory(file.getName())) {
+            if (Lib.isIgnoreFileOrDirectory(file)) {
                 continue;
             }
 
@@ -60,6 +62,13 @@ public class Dirs {
 //        System.out.println("===========================");
         FileIO.save(tree,path);
         return tree.getHash();
+    }
+    void readIgnoreFile(){
+      String[] lines =  FileIO.read(Lib.joinPath(path,Constants.Default_Ignore_File)).split(Constants.system_line_separator);
+      for(String line :lines)
+      {
+          Constants.IgnoreDirsAndFiles.add(line);
+      }
     }
     void getBlobs(){
         blobs.forEach(blob->{
