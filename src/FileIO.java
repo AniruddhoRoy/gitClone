@@ -71,6 +71,67 @@ public class FileIO {
         }
         return commit;
     }
+    static Tree readTree(String hash){
+        Tree tree = null;
+        try{
+            String path = Lib.joinPath(Constants.Working_dir,Constants.Default_Storage_Directory,Lib.objectFolder(hash,"tree"),hash);
+            File file = new File(path);
+
+            if(!file.exists()){
+                System.out.println("Tree not Found");
+                return tree;
+            }
+            try (FileInputStream fis = new FileInputStream(path);
+                 ObjectInputStream in = new ObjectInputStream(fis)) {
+                tree = (Tree) in.readObject();
+            }
+
+        }catch (Exception e){
+            System.out.println("Error - While Reading Tree");
+            System.out.println(e);
+        }
+        return tree;
+    }
+    static Blob readBlob(String hash){
+        Blob blob = null;
+        try{
+            String path = Lib.joinPath(Constants.Working_dir,Constants.Default_Storage_Directory,Lib.objectFolder(hash,"blob"),hash);
+            File file = new File(path);
+
+            if(!file.exists()){
+                System.out.println("blob not Found");
+                return blob;
+            }
+            try (FileInputStream fis = new FileInputStream(path);
+                 ObjectInputStream in = new ObjectInputStream(fis)) {
+                blob = (Blob) in.readObject();
+            }
+
+        }catch (Exception e){
+            System.out.println("Error - While Reading blob");
+            System.out.println(e);
+        }
+        return blob;
+    }
+    static void traverse_tree(Tree tree){
+        if(tree==null)
+        {
+            return;
+        }
+        for(String blobHash : tree.getBlobs()){
+            write(readBlob(blobHash));
+//            System.out.println(readBlob(blobHash));
+        }
+        for(String treeHash:tree.getTries()){
+            traverse_tree(readTree(treeHash));
+        }
+    }
+    static void export_commit(String commitHash){
+        Commit commit = FileIO.readCommits(commitHash);
+        String rootHash = commit.getRootHash();
+        Tree root = readTree(rootHash);
+        traverse_tree(root);
+    }
     ///////////////////////////////////////////////////////////////////////////
     static void save(Blob blob,String rootPath){
         try{
@@ -158,6 +219,26 @@ public class FileIO {
             System.out.println(e);
         }
 
+    }
+    //////////////////////////////////////////////////////////////
+    static void write(Blob blob){
+        try {
+            // Define path with nested directories
+            String path = Lib.joinPath(Constants.Output_dir,blob.address);
+            File file = new File(path);
+
+            // Create parent directories if not exist
+            file.getParentFile().mkdirs();
+
+            // Create and write file
+            FileWriter writer = new FileWriter(file);
+            writer.write(blob.getOrginal_string());
+            writer.close();
+
+            System.out.println("File created at: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

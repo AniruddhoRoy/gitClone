@@ -57,6 +57,7 @@ public class Head implements Serializable {
         return commits;
     }
 
+
 }
 class Heads implements Serializable , AutoCloseable  {
     private ArrayList<Head> heads = new ArrayList<>();
@@ -126,6 +127,9 @@ class Heads implements Serializable , AutoCloseable  {
        }
        return false;
    }
+    void exportCommit(){
+        FileIO.export_commit(getActiveHead().getCurrentCommitHash());
+    }
     void printHeads(){
        for(Head head : heads)
        {

@@ -8,6 +8,7 @@ public class Constants {
     static String Default_Head = "root";
     static String File_contains_Head = "Head";
     static String Working_dir = "E:\\JAVA\\Dir_Test_folder";
+    static String Output_dir = "E:\\JAVA\\Dir_Test_output_folder";
     static String Author = "aniruddho@gmail.com";
     static ArrayList<String> IgnoreDirsAndFiles = new ArrayList<>();
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy,HH:mm:ss");
