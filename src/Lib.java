@@ -4,8 +4,8 @@ public class Lib {
     public static String joinPath(String... parts) {
         return Paths.get("", parts).normalize().toString();
     }
-    public static String objectFolder(String address) {
-        return address.substring(0,2);
+    public static String objectFolder(String address,String type) {
+        return joinPath(type,address.substring(0,2));
     }
     public static boolean isIgnoreFileOrDirectory(File file){
         for(String fileName:Constants.IgnoreDirsAndFiles){
@@ -20,5 +20,12 @@ public class Lib {
             }
         }
         return  false;
+    }
+    public static boolean isNameInvalid(String str){
+        if (str.contains(" ")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

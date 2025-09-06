@@ -2,15 +2,26 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-       Dirs d = new Dirs("E:\\JAVA\\Dir_Test_folder");
-//       d.readIgnoreFile();
-//       System.out.println(Lib.joinPath("E:\\JAVA\\Dir_Test_folder","Folder2"));
-       d.getTreeRoot();
-//        System.out.println(Lib.objectFolder("akjshdf"));
-//        String path = "E:\\JAVA\\Dir_Test_folder\\main_directory\\folder_1\\file_1_2.txt";
-//        System.out.println(FileIO.read("E:\\JAVA\\Dir_Test_folder\\.tigignore"));
-//        Blob blob = new Blob(FileIO.read(path),path);
-//        System.out.println(blob.address);
-//        FileIO.save(blob,"E:\\JAVA\\Dir_Test_folder\\main_directory");
+
+//
+
+
+//        SystemHeads.printHeads();
+//        SystemHeads.addHead("RadhaKrishna1");
+//        SystemHeads.switchHead("root");
+//        System.out.println("Active:"+SystemHeads.getActiveHead().getHeadName());
+        try (Heads SystemHeads = new Heads()) {
+            SystemHeads.printHeads();
+//            SystemHeads.addHead("root2_from_roo1");
+//            SystemHeads.switchHead("root");
+//            SystemHeads.getActiveHead().update("RadhaMadhob3 - from roo1");
+            System.out.println(SystemHeads.getActiveHead().isFilesChange());
+//            System.out.println(FileIO.readCommits("873527db1cc54c1f6c013f86e7ce42cfb1a5d716").getMessage());
+            for(Commit commit : SystemHeads.getActiveHead().getCommits()){
+//                System.out.println(commit.getMessage());
+                System.out.println(commit);
+            }
+
+        }
     }
 }
